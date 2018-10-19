@@ -1,0 +1,28 @@
+
+.user-menue {
+    position: absolute;
+    left: -10px;
+    padding: 3px 3px 3px 10px;
+    bottom: -15px;
+    z-index: 1;
+    width: 220px;
+    height: 60px;
+}
+
+.user-add2bl {
+    cursor: pointer;
+}
+
+.comment-meta__avatar + .comment-meta__name > .user-menue {
+    bottom: 0;
+}
+
+.comment-meta__name,
+.comment-meta__name a {
+    position: relative;
+    z-index: 2;
+}
+
+.comment-meta__name a:hover .add-2-bl {
+    display: block;
+}
