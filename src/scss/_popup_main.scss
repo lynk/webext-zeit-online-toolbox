@@ -1,0 +1,29 @@
+body {
+  background: #009999;
+  padding: 2px;
+  font-family: $font-family;
+  font-size: 114%;
+}
+
+
+#wrapper {
+  background: white;
+  border: 1px solid silver;
+  padding: 14px 10px;
+  width: 200px;
+
+  .ui-switcher {
+    float:right;
+  }
+
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+
+    li:not(:last-of-type) {
+      margin-bottom:10px;
+    }
+  }
+
+}

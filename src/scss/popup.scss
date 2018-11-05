@@ -1,0 +1,9 @@
+@import "vars";
+@import "popup_main";
+@import "popup_switcher";
+
+
+
+.mdc-switch__thumb-underlay::before {
+  display: none !important;
+}

@@ -1,0 +1,56 @@
+body {
+  font-family: $font-family;
+  font-size: 12px;
+}
+
+.remove {
+  color: #dc543e;
+  font-weight: 900;
+  padding: 0 1px;
+  margin: 0 3px;
+  cursor: pointer;
+  font-size: 15px;
+}
+
+#blacklist {
+
+  a {
+    text-decoration: none;
+  }
+
+  ul {
+    list-style: none;
+    padding: 0;
+    margin: 6px 0 0 0;
+  }
+
+  li {
+    list-style: none;
+
+    border: 1px solid lightgrey;
+    border-radius: 3px;
+    padding: 3px 6px;
+    margin: 2px;
+    float: left;
+    font-size: 105%;
+    font-weight: bold;
+  }
+
+  .times {
+    padding: 0 6px 0 10px;
+  }
+
+}
+
+
+
+
+svg {
+  margin: 0 3px 0 3px;
+  fill: black
+}
+
+circle {
+  fill: none;
+  stroke: black;
+}

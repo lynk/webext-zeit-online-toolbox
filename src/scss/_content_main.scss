@@ -1,0 +1,33 @@
+#zontools-bl {
+  position: relative;
+  top: -15px;
+  color: dimgray;
+  font-family: $font-family;
+  font-size: .8125rem;
+  cursor: pointer;
+
+  &:hover {
+    color: #444;
+  }
+
+  &.is-blacklisted {
+    color: firebrick;
+  }
+  svg {
+    position: relative;
+    top: 3px;
+    margin-right: 3px;
+    fill: currentColor;
+  }
+
+  circle {
+    stroke: currentColor;
+    fill: none;
+  }
+}
+
+
+
+
+
+
