@@ -1,24 +1,27 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="de">
 <head>
     <meta charset="UTF-8">
     <title>ZON Tools Einstellungen</title>
     <link rel="stylesheet" href="/css/options.css" />
 </head>
 <body>
-
-    &#x2689;
-    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 23 22">
-        <rect x="9.1" y="10.7" width="3" height="6.5"/>
-        <path d="M12.2,7.5c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V4.1C8.7,4.2,8.3,4.5,8,4.9c-1.5,1.5-1.5,3.9,0,5.4 c1.5,1.5,3.9,1.5,5.4,0c1.5-1.5,1.5-3.9,0-5.4c-0.3-0.3-0.7-0.6-1.2-0.8V7.5z"/>
-        <circle cx="10.7" cy="10.7" r="10.2"/>
-    </svg>
-    &#x2689;
-    <br/>
-    User auf deiner Blacklist <br/>
+<header><span class="zeit-heading">Zeit Online</span> <span class="zontb-icon"></span> Toolbox
+</header>
+<div id="wrapper">
+    <h4>Einstellungen</h4>
+    <ul id="options" class="clearfix">
+        <li><label>Komplettansicht</label><input type="checkbox" name="komplett" id="checkbox-komplett"/>
+        <p>Bei Komplettansicht auf AN wird bei mehrseitigen Artikeln automatisch die "Auf einer Seite lesen"-Ansicht geladen.</p></li>
+        <li><label>Blacklist</label><input type="checkbox" name="blacklist" id="checkbox-blacklist"/><p>Blacklist AN enfernt <br/>1) Beiträge von Usern Deiner Blacklist und 2) moderierte Beiträge aus den Kommentaren.<br>
+        Blacklist AUS deaktiviert, löscht aber nicht die Blacklist.</p></li>
+        <li class="support"><label><br/><br/>Feedback</label>
+        <p>Feedback, Bugs und Verbesserungsvorschläge bitte per E-Mail an:<br><a href="mailto:ma.lynker@gmail.com">ma.lynker@gmail.com</a></p></li>
+    </ul>
+    <h4>User auf Deiner Blacklist</h4>
     <div id="blacklist"></div>
-
+</div>
 <script type="application/javascript" src="/js/libs/jquery-3.3.1.slim.min.js"></script>
-<script type="application/javascript" src="/js/options.js"></script>
+<script type="application/javascript" src="/js/options_bundle.js"></script>
 </body>
 </html>

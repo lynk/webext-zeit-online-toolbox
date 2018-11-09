@@ -1,19 +1,52 @@
 body {
-  background: #009999;
-  padding: 2px;
+  background: rgb(255, 255, 255);
   font-family: $font-family;
-  font-size: 114%;
+  font-size: 13px;
+  letter-spacing: 0.4px;
+  margin: 3px;
 }
 
+header {
+  font-weight: 700;
+  font-size: 13px;
+  letter-spacing: 1.5px;
+  color: #ffffff;
+  background-color: $color-primary;
+  padding: 1px 12px 6px;
+  line-height: 1;
+  border-top-right-radius: $border-radius-std;
+  border-top-left-radius: $border-radius-std;
+
+  .zeit-heading {
+    font-family: "Times New Roman", serif;
+    text-transform: uppercase;
+    font-weight: 700;
+    letter-spacing: 0.6px;
+  }
+
+  svg {
+    fill: white;
+    position: relative;
+    top: 3px;
+  }
+
+  circle {
+    fill: $color-secondary;
+    stroke: white;
+  }
+}
 
 #wrapper {
-  background: white;
-  border: 1px solid silver;
-  padding: 14px 10px;
-  width: 200px;
+  background: #ffffff;
+  border: 1px solid $color-primary;
+  border-top: 0;
+  border-bottom-left-radius: $border-radius-std;
+  border-bottom-right-radius: $border-radius-std;
+  padding: 14px 12px;
+  width: 260px;
 
   .ui-switcher {
-    float:right;
+    float: right;
   }
 
   ul {
@@ -22,8 +55,7 @@ body {
     padding: 0;
 
     li:not(:last-of-type) {
-      margin-bottom:10px;
+      margin-bottom: 16px;
     }
   }
-
 }

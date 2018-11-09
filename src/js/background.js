@@ -49,6 +49,7 @@ var ZBACK = {
 
         //if fullslug url returs 404, build old url by removing slug and redirect. set flag isSingle to end with first if
         else if (reqUrl.pathname.includes(ZBACK.fullSlug, -1) && details.statusCode == 404) {
+
             ZBACK.isSingle = true;
             const oldUrl = details.url.replace(ZBACK.fullSlug, '');
             return {
@@ -91,14 +92,14 @@ var ZBACK = {
         if (changes.config && changes.config.newValue.komplett == true) {
             ZBACK.startKomplettListening();
         }
-        else if(changes.config && changes.config.newValue.komplett == false) {
+        else if (changes.config && changes.config.newValue.komplett == false) {
             ZBACK.endKomplettListening();
         }
 
     },
 
     // Init Storage
-    onInstall: function (details) {
+    onInstall: (details)=> {
 
         switch (details.reason) {
 
@@ -115,6 +116,27 @@ var ZBACK = {
                 });
                 break;
         }
+    },
+
+    onChromeInstall: ()=> {
+
+        // Replace all rules ...
+        chrome.declarativeContent.onPageChanged.removeRules(undefined, function () {
+            // With a new rule ...
+            chrome.declarativeContent.onPageChanged.addRules([
+                {
+                    conditions: [
+                        new chrome.declarativeContent.PageStateMatcher({
+                            //pageUrl: {hostEquals: 'www.zeit.de',}
+                            pageUrl: {hostContains: '.zeit.de'}
+                        })
+                    ],
+
+                    actions: [new chrome.declarativeContent.ShowPageAction()]
+                }
+            ]);
+        });
+
     }
 };
 
@@ -127,15 +149,23 @@ chrome.runtime.onInstalled.addListener(ZBACK.onInstall);
 chrome.storage.local.get(['config'], function (result) {
 
     // Start listening
-    if (result.config.komplett == true) {
+    if (result.config && result.config.komplett == true) {
         ZBACK.startKomplettListening();
     }
-    else {
+    else if (result.config && result.config.komplett == false) {
         ZBACK.endKomplettListening();
     }
 });
 
 // Watch for config changes
-browser.storage.onChanged.addListener(ZBACK.onStorageChange);
+chrome.storage.onChanged.addListener(ZBACK.onStorageChange);
+
+
+// CHROME special
+if (window.browser === undefined) {
+    console.log("WE ARE CHROME");
+    chrome.runtime.onInstalled.addListener(ZBACK.onChromeInstall);
+}
+
 
 

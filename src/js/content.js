@@ -2,8 +2,8 @@
 
 var ZONC = {
 
-    htmlModeratedReplacer: '<hr style="color: red" />',
-    htmlBlacklistedReplacer: '<hr style="color: green" />',
+    htmlModeratedReplacer: '<hr style="color:green;">',
+    htmlBlacklistedReplacer: '<hr style="color:firebrick;">',
     selectorIdPage: 'js-comments-body',
     selectorIdUser: 'cntntfll',
     textAddUser2Bl: 'User blacklisten',
@@ -53,7 +53,7 @@ var ZONC = {
             ZONC.removeCommentsModerated(selPage);
             ZONC.removeCommentsBlacklisted(selPage);
 
-        }, 100);
+        }, 1600);
 
     },
 
@@ -100,7 +100,7 @@ var ZONC = {
 
     onUserPage: (selector) => {
 
-        let $insert = $('<a id="zontools-bl"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 23 22"><rect x="9.1" y="10.7" width="3" height="6.5"/><title class="zontools-user-title">' + ZONC.textAddUser2Bl + '</title><path d="M12.2,7.5c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V4.1C8.7,4.2,8.3,4.5,8,4.9c-1.5,1.5-1.5,3.9,0,5.4 c1.5,1.5,3.9,1.5,5.4,0c1.5-1.5,1.5-3.9,0-5.4c-0.3-0.3-0.7-0.6-1.2-0.8V7.5z"/><circle cx="10.7" cy="10.7" r="10.2"/></svg><span class="zontools-user-title">' + ZONC.textAddUser2Bl + '</span></a>');
+        let $insert = $('<a id="zontb-btn-user"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 23 22"><circle cx="10.7" cy="10.7" r="10.2"/><rect x="9.1" y="10.7" width="3" height="6.5" /><path d="M12.2,7.5c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V4.1C8.7,4.2,8.3,4.5,8,4.9c-1.5,1.5-1.5,3.9,0,5.4 c1.5,1.5,3.9,1.5,5.4,0c1.5-1.5,1.5-3.9,0-5.4c-0.3-0.3-0.7-0.6-1.2-0.8V7.5z" /></svg></span><span class="zontb-user-title">' + ZONC.textAddUser2Bl + '</span></a>');
 
         // Cache selector
         const $userWrapper = $(selector).find('.usr-data-wrapper');
@@ -121,7 +121,7 @@ var ZONC = {
 
 
         // Add click event and pass username
-        $userWrapper.find('#zontools-bl').click(function () {
+        $userWrapper.find('#zontb-btn-user').click(function () {
 
             // Add or remove?
             if ($(this).hasClass('is-blacklisted')) {
@@ -138,18 +138,19 @@ var ZONC = {
         });
     },
 
+
     setBlacklistUserBtn: ($userWrapper, state)=> {
 
         switch (state) {
             case 'on':
                 // / Add class
-                $userWrapper.find('#zontools-bl').addClass('is-blacklisted');
-                $userWrapper.find('#zontools-bl .zontools-user-title').html(ZONC.textRemoveUser2Bl);
+                $userWrapper.find('#zontb-btn-user').addClass('is-blacklisted');
+                $userWrapper.find('#zontb-btn-user .zontb-user-title').html(ZONC.textRemoveUser2Bl);
 
                 break;
             case 'off':
-                $userWrapper.find('#zontools-bl').removeClass('is-blacklisted');
-                $userWrapper.find('#zontools-bl .zontools-user-title').html(ZONC.textAddUser2Bl);
+                $userWrapper.find('#zontb-btn-user').removeClass('is-blacklisted');
+                $userWrapper.find('#zontb-btn-user .zontb-user-title').html(ZONC.textAddUser2Bl);
                 break;
         }
 

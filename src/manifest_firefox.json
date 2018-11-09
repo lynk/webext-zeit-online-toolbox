@@ -4,11 +4,21 @@
   "version": "0.2.7",
   "description": " ",
   "author": "lynk",
+  "applications": {
+    "gecko": {
+      "id": "{e462e751-9bb4-4db2-b635-7ca4b83bdcd2}",
+      "strict_min_version": "57.0"
+    }
+  },
   "icons": {
     "16": "icons/webextension-zeit-icon-128.png",
     "32": "icons/webextension-zeit-icon-128.png"
   },
   "page_action": {
+    "browser_style": true,
+    "show_matches": [
+      "*://*.zeit.de/*"
+    ],
     "default_icon": {
       "32": "icons/webextension-zeit-icon-128.png",
       "128": "icons/webextension-zeit-icon-128.png"
@@ -18,10 +28,10 @@
   },
   "options_ui": {
     "page": "html/options.html",
-    "open_in_tab": true
+    "open_in_tab": true,
+    "browser_style": false
   },
   "permissions": [
-    "declarativeContent",
     "storage",
     "webRequest",
     "webRequestBlocking",
