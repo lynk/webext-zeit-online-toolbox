@@ -3,23 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>ZON Tools Einstellungen</title>
-    <link rel="stylesheet" href="/css/options.css" />
+    <link rel="stylesheet" href="/css/options.css"/>
 </head>
 <body>
-<header><span class="zeit-heading">Zeit Online</span> <span class="zontb-icon"></span> Toolbox
-</header>
 <div id="wrapper">
-    <h4>Einstellungen</h4>
+    <header><span class="zeit-heading">Zeit Online</span> <span class="zontb-icon"></span> Toolbox
+    </header>
+
+    <h4></h4>
     <ul id="options" class="clearfix">
         <li><label>Komplettansicht</label><input type="checkbox" name="komplett" id="checkbox-komplett"/>
-        <p>Bei Komplettansicht auf AN wird bei mehrseitigen Artikeln automatisch die "Auf einer Seite lesen"-Ansicht geladen.</p></li>
-        <li><label>Blacklist</label><input type="checkbox" name="blacklist" id="checkbox-blacklist"/><p>Blacklist AN enfernt <br/>1) Beiträge von Usern Deiner Blacklist und 2) moderierte Beiträge aus den Kommentaren.<br>
-        Blacklist AUS deaktiviert, löscht aber nicht die Blacklist.</p></li>
+            <p>Komplettansicht AN lädt bei mehrseitigen Artikeln automatisch die "Auf einer Seite lesen"-Ansicht.</p>
+        </li>
+        <li><label>Ignorierliste</label><input type="checkbox" name="blacklist" id="checkbox-blacklist"/>
+            <p>Ignorierliste AN enfernt <br/>1) Kommentare von Usern Deiner Ignorierliste und 2) moderierte Kommentare.<br>
+                Ignorierliste AUS deaktiviert sie, löscht sie aber nicht.</p></li>
         <li class="support"><label><br/><br/>Feedback</label>
-        <p>Feedback, Bugs und Verbesserungsvorschläge bitte per E-Mail an:<br><a href="mailto:ma.lynker@gmail.com">ma.lynker@gmail.com</a></p></li>
+            <p>Feedback, Bugs und Verbesserungsvorschläge bitte per E-Mail an:<br><a href="mailto:ma.lynker@gmail.com">ma.lynker@gmail.com</a>
+            </p></li>
     </ul>
-    <h4>User auf Deiner Blacklist</h4>
-    <div id="blacklist"></div>
+    <h4>User auf Deiner Ignorierliste</h4>
+    <div id="blacklist" class="clearfix"></div>
+    <footer class="clearfix"><h4></h4>
+        <a title="Firefox Add-on" href="https://addons.mozilla.org/firefox/user/lynker/" target="_blank"><img class="footer--icons" src="/icons/firefox-logo-128.png"/></a>
+        <a title="Code on Github" href="https://github.com/lynk" target="_blank"><img class="footer--icons" src="/icons/GitHub-Mark-64px.png"/></a>
+        <img class="footer--icons" src="/icons/chrome-logo-128.png"/>
+    </footer>
 </div>
 <script type="application/javascript" src="/js/libs/jquery-3.3.1.slim.min.js"></script>
 <script type="application/javascript" src="/js/options_bundle.js"></script>

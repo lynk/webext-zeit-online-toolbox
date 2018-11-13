@@ -10,8 +10,8 @@ $font-family: "LibreFranklinRegular", Arial, sans-serif;
 $color-primary: #a62f19;
 $color-secondary: #CA4A33;
 $color-grey-light: #EFEFEF;
-$color-grey-medium: #C1C1C1;
-$color-grey-dark: #515251;
+$color-grey-medium: #d3d3d3;
+$color-grey-dark: #b4b5b4;
 $color-grey-darkest: #3D3E3E;
 
 $border-radius-std: 2px;
@@ -32,4 +32,12 @@ $border-radius-std: 2px;
   background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 23 22" style=" fill: white;"><circle cx="10.7" cy="10.7" r="10.2" style=" fill: %23CA4A33;
     stroke: white;"/><rect x="9.1" y="10.7" width="3" height="6.5" /><path d="M12.2,7.5c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V4.1C8.7,4.2,8.3,4.5,8,4.9c-1.5,1.5-1.5,3.9,0,5.4 c1.5,1.5,3.9,1.5,5.4,0c1.5-1.5,1.5-3.9,0-5.4c-0.3-0.3-0.7-0.6-1.2-0.8V7.5z" />
     </svg>');
+}
+
+.el1 {
+  box-shadow: 0 2px 1px -1px rgba(0, 0, 0, .2), 0 1px 1px 0 rgba(0, 0, 0, .14), 0 1px 3px 0 rgba(0, 0, 0, .12);
+}
+
+.el2{
+  box-shadow: 0 3px 1px -2px rgba(0,0,0,.2), 0 2px 2px 0 rgba(0,0,0,.14), 0 1px 5px 0 rgba(0,0,0,.12);
 }

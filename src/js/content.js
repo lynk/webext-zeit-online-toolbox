@@ -1,4 +1,4 @@
-;'use strict';
+'use strict';
 
 var ZONC = {
 
@@ -11,7 +11,9 @@ var ZONC = {
 
     removeCommentsModerated: function (selector) {
 
-        $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').html(ZONC.htmlModeratedReplacer);
+        // $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').html(ZONC.htmlModeratedReplacer);
+        $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').remove();
+
 
     },
 
@@ -32,12 +34,14 @@ var ZONC = {
                 userSelector = userSelector.substring(0, userSelector.length - 1);
 
                 // todo: remove first comment and keep subcomment toggler
-                $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').html(ZONC.htmlBlacklistedReplacer);
+                // $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').html(ZONC.htmlBlacklistedReplacer);
+                $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').remove();
             }
         })
     },
 
     cleanPage: (selPage)=> {
+
 
         // Trigger xhr loading of subcomments into DOM
         $(selPage).find('div.js-load-comment-replies').trigger('click');
@@ -50,10 +54,13 @@ var ZONC = {
                 this.click();
             });
 
+        }, 2000);
+
+        // Wait a little before we clean up
+        window.setTimeout(function () {
             ZONC.removeCommentsModerated(selPage);
             ZONC.removeCommentsBlacklisted(selPage);
-
-        }, 1600);
+        }, 2800);
 
     },
 
@@ -157,6 +164,9 @@ var ZONC = {
     }
 
 };
+
+
+
 
 
 $(document).ready(function () {

@@ -25,6 +25,13 @@ var ZBACK = {
         };
 
 
+        // Check path for slug we know are not articles and end exec
+        console.log(this.isSingle);
+        if (reqUrl.pathname.includes('index', -1) ) {
+            return;
+        }
+
+
         //  If this is true, redirecting is done
         if (details.statusCode == 200 && ZBACK.isSingle) {
             ZBACK.isSingle = false;
@@ -57,6 +64,7 @@ var ZBACK = {
             }
         }
 
+        console.log("--@@ is OMPLETT");
 
     },
 
@@ -165,6 +173,9 @@ chrome.storage.onChanged.addListener(ZBACK.onStorageChange);
 if (window.browser === undefined) {
     console.log("WE ARE CHROME");
     chrome.runtime.onInstalled.addListener(ZBACK.onChromeInstall);
+}
+else {
+    console.log("--@@ WE ARE FF");
 }
 
 

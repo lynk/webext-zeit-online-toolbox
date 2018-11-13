@@ -12,6 +12,7 @@ body {
   letter-spacing: 0.3px;
   color: $color-grey-darkest;
   line-height: 1.3;
+  -webkit-font-smoothing: antialiased;
 }
 
 body * {
@@ -20,16 +21,11 @@ body * {
 
 header {
   font-weight: 700;
-  font-size: 14px;
+  font-size: 15px;
   letter-spacing: 1.5px;
-  color: #ffffff;
+  color: $color-primary;
   text-align: center;
-  background-color: $color-primary;
-  padding: 1px 12px 6px;
   line-height: 1;
-  border-radius: $border-radius-std;
-  margin-top: 10px;
-
 
   .zeit-heading {
     font-family: "Times New Roman", serif;
@@ -40,27 +36,31 @@ header {
 }
 
 footer {
-  position: absolute;
-  bottom: 20px;
-  height: 20px;
-  width: 640px;
+  margin-top: 28px;
   text-align: center;
+}
+
+.footer--icons {
+  width: 18px;
+  height: auto;
+  opacity: .8;
+  margin: 0 4px;
 }
 
 #wrapper {
   background: #ffffff;
-  //border: 1px solid $color-primary;
-  border-top: 0;
-  padding: 14px 12px;
+  padding: 16px 12px;
 
   h4 {
-    border-bottom: 1px solid $color-secondary;
-    margin: 30px 0 14px;
-    font-size: 14px;
+    font-size: 13px;
     letter-spacing: 1.2px;
+    width: 50%;
+    margin: 14px auto 12px auto;
+    text-align: center;
+    padding: 8px 0 0;
 
-    &:first-child {
-      margin-top: 10px;
+    &:first-of-type {
+      border-top: 1px solid $color-secondary;
     }
   }
 }
@@ -89,12 +89,14 @@ li {
     border-radius: $border-radius-std;
 
     &:last-child {
+      border: 1px solid white;
       margin-right: 0;
-      padding: 12px 22px;
+      padding: 7px 24px;
+      @extend .el2;
     }
 
     p {
-      color: $color-grey-dark;
+      color: $color-grey-darkest;
       font-size: 12px;
       line-height: 1.5;
     }
@@ -123,23 +125,37 @@ li {
 
   a {
     text-decoration: none;
+    vertical-align: middle;
+
+    svg {
+      display: inline-block;
+      position: relative;
+      top: -2px;
+      fill: $color-grey-darkest;
+      transform: scale(1.1);
+    }
   }
 
   li {
     border: 1px solid $color-grey-medium;
-    border-radius: 10px;
-    padding: 4px 10px 4px 8px;
-    margin: 0 4px 4px 0;
+    border-radius: $border-radius-std;
+    padding: 6px 12px 3px 10px;
+    margin: 0 6px 6px 0;
+
+    &:first-letter {
+      font-weight: 800;
+    }
   }
 
   .remove {
-    color: #dc543e;
+    color: $color-secondary;
     font-weight: 900;
-    padding: 0 1px;
-    margin: 0 10px 0 16px;
+    margin: 0 12px 0 16px;
     cursor: pointer;
-    font-size: 20px;
+    font-size: 22px;
     line-height: 0;
     vertical-align: sub;
+    transform: scale(1.2);
+    display: inline-block;
   }
 }

@@ -3,24 +3,23 @@ body {
   font-family: $font-family;
   font-size: 13px;
   letter-spacing: 0.4px;
-  margin: 3px;
+  margin: 0;
 }
 
 header {
   font-weight: 700;
-  font-size: 13px;
   letter-spacing: 1.5px;
-  color: #ffffff;
-  background-color: $color-primary;
-  padding: 1px 12px 6px;
+  text-align: center;
+  color: $color-primary;
   line-height: 1;
-  border-top-right-radius: $border-radius-std;
-  border-top-left-radius: $border-radius-std;
+  margin-bottom: 12px;
+  padding-bottom: 7px;
+  border-bottom: 1px solid $color-primary;
 
   .zeit-heading {
     font-family: "Times New Roman", serif;
     text-transform: uppercase;
-    font-weight: 700;
+    font-weight: 900;
     letter-spacing: 0.6px;
   }
 
@@ -37,13 +36,8 @@ header {
 }
 
 #wrapper {
-  background: #ffffff;
-  border: 1px solid $color-primary;
-  border-top: 0;
-  border-bottom-left-radius: $border-radius-std;
-  border-bottom-right-radius: $border-radius-std;
-  padding: 14px 12px;
-  width: 260px;
+  padding: 2px 12px 12px;
+  width: 214px;
 
   .ui-switcher {
     float: right;

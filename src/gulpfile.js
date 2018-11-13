@@ -32,5 +32,5 @@ gulp.task('concat', T.concat);
 
 // Watchers
 gulp.task('watch', function () {
-    gulp.watch([sassSrc], gulp.parallel(['css', 'concat']));
+    gulp.watch([sassSrc, jsSrc, '!./js/options_bundle.js'], gulp.parallel(['css', 'concat']));
 });
