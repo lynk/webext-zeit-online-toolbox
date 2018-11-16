@@ -12,7 +12,7 @@ var ZONC = {
     removeCommentsModerated: function (selector) {
 
         // $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').html(ZONC.htmlModeratedReplacer);
-        $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').remove();
+        // $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').remove();
 
 
     },
@@ -24,7 +24,7 @@ var ZONC = {
             if (result.blacklist !== undefined) {
 
                 let userSelector = '';
-
+                console.time('Remove');
                 // Iterate result obj and build multiple selector string
                 for (const [key, value] of Object.entries(result.blacklist)) {
                     userSelector += 'a:contains(\'' + value + '\')' + ',';
@@ -35,32 +35,63 @@ var ZONC = {
 
                 // todo: remove first comment and keep subcomment toggler
                 // $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').html(ZONC.htmlBlacklistedReplacer);
-                $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').remove();
+
+
+                // $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').remove();
+
+
+                $(selector).find('.comment-meta__name').find(userSelector)
+                    .closest('article.comment')
+                    .each(function () {
+
+                        // Keep article node if toplevel comment
+                        if ($(this).hasClass('js-comment-toplevel')) {
+                            console.log("TOPLEVEL");
+                            $(this).empty();
+                        }
+                        console.log($(this));
+
+                    });
+
+                console.timeEnd('Remove')
             }
         })
     },
 
     cleanPage: (selPage)=> {
 
-
+        console.log("CLEAN");
         // Trigger xhr loading of subcomments into DOM
-        $(selPage).find('div.js-load-comment-replies').trigger('click');
+        $(selPage).find('div.js-load-comment-replies').each(function () {
+            const t = $(this);
 
-        // Wait x seconds for xhr loading
-        window.setTimeout(function () {
+            console.log(t.attr('data-url'));
 
-            // Close subcomment sections
-            $(selPage).find('a.js-hide-replies').each(function () {
-                this.click();
+            $.ajax({
+                url: t.attr('data-url'),
+                method: "GET"
+            }).done(function (result) {
+                console.log(result);
             });
 
-        }, 2000);
 
-        // Wait a little before we clean up
-        window.setTimeout(function () {
-            ZONC.removeCommentsModerated(selPage);
-            ZONC.removeCommentsBlacklisted(selPage);
-        }, 2800);
+        });
+
+        // // Wait x seconds for xhr loading
+        // window.setTimeout(function () {
+        //
+        //     // Close subcomment sections
+        //     $(selPage).find('a.js-hide-replies').each(function () {
+        //         this.click();
+        //     });
+        //
+        // }, 2000);
+        //
+        // // Wait a little before we clean up
+        // window.setTimeout(function () {
+        //     ZONC.removeCommentsModerated(selPage);
+        //     ZONC.removeCommentsBlacklisted(selPage);
+        // }, 2800);
 
     },
 
@@ -164,9 +195,6 @@ var ZONC = {
     }
 
 };
-
-
-
 
 
 $(document).ready(function () {

@@ -24,9 +24,9 @@ var ZBACK = {
             'hash': tempUrl.hash
         };
 
+            // todo: eval if pre-checking for isSingle is possible
 
-        // Check path for slug we know are not articles and end exec
-        console.log(this.isSingle);
+        // Check path for slug we know are not articles and end redirect
         if (reqUrl.pathname.includes('index', -1) ) {
             return;
         }
@@ -63,9 +63,6 @@ var ZBACK = {
                 redirectUrl: oldUrl
             }
         }
-
-        console.log("--@@ is OMPLETT");
-
     },
 
     onBeforeRequest: function (details) {
