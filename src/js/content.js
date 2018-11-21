@@ -1,13 +1,15 @@
 'use strict';
 
+
 var ZONC = {
 
     htmlModeratedReplacer: '<hr style="color:green;">',
     htmlBlacklistedReplacer: '<hr style="color:firebrick;">',
     selectorIdPage: 'js-comments-body',
     selectorIdUser: 'cntntfll',
-    textAddUser2Bl: 'User blacklisten',
-    textRemoveUser2Bl: 'User von der Blacklist entfernen',
+    blacklistCss: '',
+    textAddUser2Bl: 'User ignorieren',
+    textRemoveUser2Bl: 'User von der Ignorierliste entfernen',
 
     removeCommentsModerated: function (selector) {
 
@@ -17,14 +19,15 @@ var ZONC = {
 
     },
 
-    removeCommentsBlacklisted: function (selector) {
+    removeCommentsBlacklisted: function (commentString = '') {
+
 
         chrome.storage.local.get(["blacklist"], function (result) {
 
             if (result.blacklist !== undefined) {
 
                 let userSelector = '';
-                console.time('Remove');
+
                 // Iterate result obj and build multiple selector string
                 for (const [key, value] of Object.entries(result.blacklist)) {
                     userSelector += 'a:contains(\'' + value + '\')' + ',';
@@ -33,46 +36,120 @@ var ZONC = {
                 // Remove trailing comma
                 userSelector = userSelector.substring(0, userSelector.length - 1);
 
+
+                // Is this called by cleanPage or commentFilter ?
+                if (commentString !== '') {
+                }
+                else { // normal page cleaning
+
+                }
+
+
                 // todo: remove first comment and keep subcomment toggler
-                // $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').html(ZONC.htmlBlacklistedReplacer);
+                $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').html(ZONC.htmlBlacklistedReplacer);
 
 
                 // $(selector).find('.comment-meta__name').find(userSelector).closest('.comment').not('[data-ct-column="1"]').remove();
 
 
-                $(selector).find('.comment-meta__name').find(userSelector)
-                    .closest('article.comment')
-                    .each(function () {
+                // NEW STUFF for later
+                // $(document.getElementById(ZONC.selectorIdPage)).find('.comment-meta__name').find(userSelector)
+                //     .closest('article.comment')
+                //     .each(function () {
+                //
+                //         // Keep article node if toplevel comment
+                //         if ($(this).hasClass('js-comment-toplevel')) {
+                //             console.log("TOPLEVEL");
+                //             $(this).empty();
+                //         }
+                //         //  console.log($(this));
+                //
+                //     });
 
-                        // Keep article node if toplevel comment
-                        if ($(this).hasClass('js-comment-toplevel')) {
-                            console.log("TOPLEVEL");
-                            $(this).empty();
-                        }
-                        console.log($(this));
-
-                    });
-
-                console.timeEnd('Remove')
             }
-        })
+        });
+
+    },
+
+    initCommentListening: (wrapper)=> {
+
+
+        // Remove native Zeit event listener class and add my own
+        $(wrapper).find('div.js-load-comment-replies').addClass('js-load-comment-replies-lynk').removeClass('js-load-comment-replies');
+
+        // Add my listeners
+        $(wrapper).find('div.js-load-comment-replies-lynk').click(ZONC.loadComment);
+
+    },
+
+    loadComment: (e)=> {
+
+        console.log(ZONC.blacklistCss);
+        e.preventDefault();
+        const $target = $(e.currentTarget);
+
+        // Get data url and get comments via XHR
+        const url = $target.closest('div.js-load-comment-replies-lynk').attr('data-url');
+
+
+        let jqxhr = $.ajax({
+            url: url,
+            method: "GET"
+        }).done(function (commentString) {
+
+
+            const $commentHtml = $('<div/>').append(commentString);
+
+            // Get all articles
+            const $articleHtml = $commentHtml.find('article.comment');
+
+            let cleanComments = document.createElement('div');
+
+            $articleHtml.each(function () {
+
+                const $this = $(this);
+
+                // Check for username and add to cleanComments
+                if ($this.find('em.moderation').length === 0) {
+
+                    // Check for moderated comment
+                    if ($this.find('.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
+                        $(this).attr('style', 'display:none');
+                        cleanComments.append($(this)[0]);
+                    }
+                }
+            });
+
+            let numComments = cleanComments.childNodes.length;
+
+            // Add clean comments to DOM
+            $target.closest('article.comment').after(cleanComments.childNodes);
+
+            // Remove our click event + class; add native Zeit opener class
+            $target.closest('div.comment-overlay').off().removeClass('js-load-comment-replies-lynk').addClass('js-show-replies');
+
+            // Trigger
+            $target.closest('div.comment-overlay').trigger('click');
+
+
+            // Add close link
+            const articleId = $target.closest("article.comment").prev("article.comment").attr('id');
+
+            const closeHtml = '<a id="hide-replies-' + articleId + '" href="#" data-ct-label="antworten_verbergen" class="comment__rewrapper js-hide-replies"><span class="comment__count">' + numComments + '</span><span class="comment__cta">Antworten verbergen</span></a>';
+
+            $target.closest('.comment__container').prepend(closeHtml);
+
+
+        });
+
+
     },
 
     cleanPage: (selPage)=> {
 
-        console.log("CLEAN");
         // Trigger xhr loading of subcomments into DOM
         $(selPage).find('div.js-load-comment-replies').each(function () {
             const t = $(this);
-
-            console.log(t.attr('data-url'));
-
-            $.ajax({
-                url: t.attr('data-url'),
-                method: "GET"
-            }).done(function (result) {
-                console.log(result);
-            });
 
 
         });
@@ -90,7 +167,7 @@ var ZONC = {
         // // Wait a little before we clean up
         // window.setTimeout(function () {
         //     ZONC.removeCommentsModerated(selPage);
-        //     ZONC.removeCommentsBlacklisted(selPage);
+        //     ZONC.removeCommentsBlacklisted();
         // }, 2800);
 
     },
@@ -176,7 +253,6 @@ var ZONC = {
         });
     },
 
-
     setBlacklistUserBtn: ($userWrapper, state)=> {
 
         switch (state) {
@@ -192,8 +268,29 @@ var ZONC = {
                 break;
         }
 
-    }
+    },
 
+    buildBlacklistCss: () => {
+
+
+        chrome.storage.local.get(["blacklist"], function (result) {
+
+            if (result.blacklist !== undefined) {
+
+                let userSelector = '';
+
+                // Iterate result obj and build multiple selector string
+                for (const [key, value] of Object.entries(result.blacklist)) {
+                    userSelector += 'a:contains(\'' + value + '\')' + ',';
+                }
+
+                // Remove trailing comma
+                userSelector = userSelector.substring(0, userSelector.length - 1);
+
+                ZONC.blacklistCss = userSelector;
+            }
+        });
+    }
 };
 
 
@@ -206,7 +303,6 @@ $(document).ready(function () {
         ZONC.onUserPage(selUser);
     }
 
-
     // We are on a page with comments
     const selPage = document.getElementById(ZONC.selectorIdPage);
 
@@ -217,6 +313,8 @@ $(document).ready(function () {
             // Start listening
             if (result.config.blacklist == true) {
                 ZONC.cleanPage(selPage);
+                ZONC.initCommentListening(selPage);
+
             }
 
         });
