@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Zeit Online Toolbox",
-  "version": "0.2.7",
+  "version": "0.3.0",
   "description": " ",
   "author": "lynk",
   "icons": {
@@ -38,7 +38,7 @@
         "*://*.zeit.de/*"
       ],
       "js": [
-        "js/libs/jquery-3.3.1.slim.min.js",
+        "js/libs/jquery-3.3.1.min.js",
         "js/content.js"
       ],
       "css": [
