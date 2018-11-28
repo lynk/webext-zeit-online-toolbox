@@ -1,19 +1,63 @@
-//#zontools-bl {
-//  position: relative;
-//  top: -15px;
-//  color: dimgray;
-//  font-family: $font-family;
-//  font-size: .8125rem;
-//  cursor: pointer;
-//
-//  &:hover {
-//    color: #444;
-//  }
-//
-//  &.is-blacklisted {
-//    color: firebrick;
-//  }
+// Article page
 
+.skeleton-text-lynk {
+  background: $color-grey-light;
+
+  &:after {
+    content: ' ';
+    white-space: pre;
+  }
+
+  .comment-meta__name & {
+    line-height: 1.2;
+    width: 110px;
+  }
+
+  .comment__body & {
+    line-height: 1.1;
+    margin-bottom: 6px;
+    width: 60%;
+
+    &:first-child {
+      width: 90%;
+    }
+  }
+
+}
+
+
+// todo: fix for small screens
+.gotop-comment-lynk {
+  display: block;
+  position: relative;
+  bottom: -12px;
+  border: 1px solid $color-grey-medium;
+  border-radius: 100%;
+  width: 23px;
+  height: 23px;
+  margin: 0 auto;
+  background: white;
+  transform: rotate(-90deg) translateY(320px);
+  z-index: 3;
+
+  &:after {
+    position: absolute;
+    left: 4px;
+    content: '\027A4';
+    color: $color-zeit-icon;
+    font-size: 13px;
+  }
+  
+  &:hover {
+    color: $color-grey-darkest;
+  }
+}
+
+.posi-rel-lynk {
+  position: relative;
+}
+
+// User page
 #zontb-btn-user {
 
   border: 1px solid $color-grey-medium;
@@ -42,13 +86,12 @@
   &.is-blacklisted {
     color: black;
 
-    circle{
+    circle {
       fill: $color-grey-darkest;
     }
   }
 
 }
-
 
 // Zeit Online
 .usr-prf-wrp .usr-rec-cmts {
