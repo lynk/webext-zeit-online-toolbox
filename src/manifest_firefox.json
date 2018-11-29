@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Zeit Online Toolbox",
-  "version": "0.3.0",
+  "version": "0.3.4",
   "description": " ",
   "author": "lynk",
   "applications": {
@@ -11,8 +11,8 @@
     }
   },
   "icons": {
-    "16": "icons/webextension-zeit-icon-128.png",
-    "32": "icons/webextension-zeit-icon-128.png"
+    "64": "icons/webextension-zeit-icon-128.png",
+    "128": "icons/webextension-zeit-icon-128.png"
   },
   "page_action": {
     "browser_style": true,
@@ -20,8 +20,7 @@
       "*://*.zeit.de/*"
     ],
     "default_icon": {
-      "32": "icons/webextension-zeit-icon-128.png",
-      "128": "icons/webextension-zeit-icon-128.png"
+      "16": "icons/webextension-zeit-icon-16.png"
     },
     "default_title": "Zeit Online Toolbox",
     "default_popup": "html/popup.html"
