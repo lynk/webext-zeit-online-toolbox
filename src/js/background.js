@@ -24,10 +24,10 @@ var ZBACK = {
             'hash': tempUrl.hash
         };
 
-            // todo: eval if pre-checking for isSingle is possible
+        // todo: eval if pre-checking for isSingle is possible
 
         // Check path for slug we know are not articles and end redirect
-        if (reqUrl.pathname.includes('index', -1) ) {
+        if (reqUrl.pathname.includes('index', -1)) {
             return;
         }
 
@@ -168,11 +168,9 @@ chrome.storage.onChanged.addListener(ZBACK.onStorageChange);
 
 // CHROME special
 if (window.browser === undefined) {
-    console.log("WE ARE CHROME");
     chrome.runtime.onInstalled.addListener(ZBACK.onChromeInstall);
 }
 else {
-    console.log("--@@ WE ARE FF");
 }
 
 
