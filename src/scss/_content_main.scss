@@ -25,6 +25,26 @@
 
 }
 
+.progress-lynk {
+  background-image: repeating-linear-gradient(
+                  -90deg,
+                  $color-grey-dark 3px,
+                  $color-grey-darkest 14px,
+                  $color-grey-dark 20px,
+                  $color-grey-dark 20px /* determines size */
+  );
+  background-size: 28px 28px;
+  animation: progress-lynk 3s linear infinite;
+}
+
+@keyframes progress-lynk {
+  0% {
+    background-position: 0 0;
+  }
+  100% {
+    background-position: 28px 0;
+  }
+}
 
 // todo: fix for small screens
 .gotop-comment-lynk {
@@ -43,11 +63,12 @@
   &:after {
     position: absolute;
     left: 4px;
+    bottom: 1px;
     content: '\027A4';
     color: $color-zeit-icon;
     font-size: 13px;
   }
-  
+
   &:hover {
     color: $color-grey-darkest;
   }
