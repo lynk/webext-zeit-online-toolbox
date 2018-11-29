@@ -30,20 +30,23 @@ var ZONC =
         $(document.getElementById(ZONC.selectorIdPage)).find('div.comment-meta__name').find(ZONC.blacklistCss)
             .closest('article.comment')
             .each(function () {
-
                 ZONC.removeCommentsFilter($(this));
             });
     },
 
     removeCommentsFilter: (target) => {
 
-        // Add skeleton if toplevel comment
-        if (target.hasClass('js-comment-toplevel')) {
-
+        // Add skeleton if comment has replies = no next toplevel comment
+        if (target.hasClass('js-comment-toplevel')
+            && !target.nextAll('article.comment:first').hasClass('js-comment-toplevel')) {
             target.empty().append(ZONC.htmlSkeletonComment);
         }
+        // Remove if standalone comment without replies
+        else if (target.hasClass('js-comment-toplevel')) {
+            target.remove();
+        }
         else if (target.hasClass('comment--wrapped')) {
-
+            // todo:
         }
         else {
             target.remove();
@@ -67,6 +70,9 @@ var ZONC =
         // Get data url and get comments via XHR
         const url = $target.closest('div.js-load-comment-replies-lynk').attr('data-url');
         const articleId = $target.closest('article.comment').attr('id');
+
+        // Add loader Animation
+        $target.find('span.comment-overlay__count').addClass('progress-lynk');
 
 
         let jqxhr = $.ajax({
@@ -94,7 +100,7 @@ var ZONC =
                         // Check for username and add to cleanComments
                         if ($this.find('div.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
                             // check for iteration index to add stuff add 8th
-                            if (numComments % 5 == 0) {
+                            if (numComments % 4 == 0) {
                                 $this.addClass('posi-rel-lynk');
                                 $this.append('<a class="gotop-comment-lynk" href="#' + articleId + '"></a>');
                             }
@@ -118,15 +124,18 @@ var ZONC =
                     // Trigger click
                     $target.closest('div.comment-overlay').trigger('click');
 
-                    // Add close link
-                    const articleId = $target.closest('article.comment').prev('article.comment').attr('id');
 
                     // Correct comment count
                     numComments--;
 
+                    // Add close link
+                    const articleId = $target.closest('article.comment').prev('article.comment').attr('id');
                     const closeHtml = '<a id="hide-replies-' + articleId + '" href="#" data-ct-label="antworten_verbergen" class="comment__rewrapper js-hide-replies"><span class="comment__count">' + numComments + '</span><span class="comment__cta">Antworten verbergen</span></a>';
 
                     $target.closest('.comment__container').prepend(closeHtml);
+
+                    // Remove loader animation
+                    $target.find('span.comment-overlay__count').removeClass('progress-lynk');
                 });
 
             })
@@ -270,7 +279,7 @@ $(document).ready(function () {
         ZONC.onUserPage(selUser);
     }
 
-    // We are on a page with comments
+    // We are on a page with comments?
     const selPage = document.getElementById(ZONC.selectorIdPage);
 
     if (selPage != null) {
@@ -286,7 +295,6 @@ $(document).ready(function () {
                 ZONC.cleanPage();
                 ZONC.initCommentListening(selPage);
             }
-
         });
     }
 
