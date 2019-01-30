@@ -2,7 +2,7 @@ Zeit Online Toolbox
 
 ist ein Firefox und Chrome Add-on zur Verbesserung der Zeit Online Experience.
 
-- Blockiere User überdie  Ignorierliste
+- Blockiere User über die Ignorierliste
 - Ignorierte User und moderierte Kommentare werden aus den Kommentaren gefiltert
 - Automatische Ein-Seiten-Ansicht für mehrseitige Artikel
 
