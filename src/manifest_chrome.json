@@ -1,8 +1,8 @@
 {
   "manifest_version": 2,
   "name": "Zeit Online Toolbox",
-  "version": "0.3.4",
-  "description": " ",
+  "version": "1.0.2",
+  "description": "Zeit Online Kommentar-Ignorierliste. Sperre und blocke User aus den Kommentaren. Automatische Ein-Seiten-Ansicht und mehr.",
   "author": "lynk",
   "icons": {
     "64": "icons/webextension-zeit-icon-128.png",
