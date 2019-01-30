@@ -5,7 +5,7 @@ var ZONC =
 
     htmlModeratedReplacer: '<hr style="color:green;">',
     htmlBlacklistedReplacer: '<hr style="color:firebrick;">',
-    htmlSkeletonComment: `<div class="comment__container"><div class="comment-meta"><div class="comment-meta__name"><div class="skeleton-text-lynk"></div></div></div><div class="comment__body"><div class="skeleton-text-lynk"></div><div class="skeleton-text-lynk"></div></div></div>`,
+    htmlSkeletonComment: '<div class="comment__container"><div class="comment-meta"><div class="comment-meta__name"><div class="skeleton-text-lynk"></div></div></div><div class="comment__body"><div class="skeleton-text-lynk"></div><div class="skeleton-text-lynk"></div>{link}</div></div>',
     selectorIdPage: 'js-comments-body',
     selectorIdUser: 'cntntfll',
     blacklistCss: '',
@@ -36,17 +36,21 @@ var ZONC =
 
     removeCommentsFilter: (target) => {
 
+
         // Add skeleton if comment has replies = no next toplevel comment
         if (target.hasClass('js-comment-toplevel')
             && !target.nextAll('article.comment:first').hasClass('js-comment-toplevel')) {
-            target.empty().append(ZONC.htmlSkeletonComment);
+
+            // First replace the placeholder {link} with emty string then append
+            target.empty().append(ZONC.htmlSkeletonComment.replace('{link}',''));
         }
         // Remove if standalone comment without replies
         else if (target.hasClass('js-comment-toplevel')) {
             target.remove();
         }
         else if (target.hasClass('comment--wrapped')) {
-            // todo:
+            // todo: First comment with opener link
+            target.empty().append(ZONC.htmlSkeletonComment.replace('{link}',''));
         }
         else {
             target.remove();
@@ -58,7 +62,7 @@ var ZONC =
         // Remove native Zeit event listener class and add my own
         $(wrapper).find('div.js-load-comment-replies').addClass('js-load-comment-replies-lynk').removeClass('js-load-comment-replies');
 
-        // Add my listeners
+        // trigger click
         $(wrapper).find('div.js-load-comment-replies-lynk').click(ZONC.loadComments);
     },
 
@@ -75,71 +79,71 @@ var ZONC =
         $target.find('span.comment-overlay__count').addClass('progress-lynk');
 
 
-        let jqxhr = $.ajax({
-                url: url,
-                method: 'GET',
-                dataType: 'text'
-            }).done(function (commentString) {
+        $.ajax({
+            url: url,
+            method: 'GET',
+            dataType: 'text'
+        }).done(function (commentString) {
 
-                const $commentHtml = $('<div/>').append(commentString);
+            const $commentHtml = $('<div/>').append(commentString);
 
-                // Get all articles
-                const $articleHtml = $commentHtml.find('article.comment');
+            // Get all articles
+            const $articleHtml = $commentHtml.find('article.comment');
 
 
-                let cleanComments = document.createElement('div');
-                let numComments = 1;
+            let cleanComments = document.createElement('div');
+            let numComments = 1;
 
-                $articleHtml.each(function () {
+            $articleHtml.each(function () {
 
-                    const $this = $(this);
+                const $this = $(this);
 
-                    // Check for moderated comment
-                    if ($this.find('em.moderation').length === 0) {
+                // Check for moderated comment
+                if ($this.find('em.moderation').length === 0) {
 
-                        // Check for username and add to cleanComments
-                        if ($this.find('div.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
-                            // check for iteration index to add stuff add 8th
-                            if (numComments % 4 == 0) {
-                                $this.addClass('posi-rel-lynk');
-                                $this.append('<a class="gotop-comment-lynk" href="#' + articleId + '"></a>');
-                            }
-
-                            $this.attr('style', 'display:none');
-                            cleanComments.append($this[0]);
-                            numComments++;
+                    // Check for username and add to cleanComments
+                    if ($this.find('div.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
+                        // check for iteration index to add stuff add xth
+                        if (numComments % 4 == 0) {
+                            $this.addClass('posi-rel-lynk');
+                            $this.append('<a class="gotop-comment-lynk" href="#' + articleId + '"></a>');
                         }
+
+                        $this.attr('style', 'display:none');
+                        cleanComments.append($this[0]);
+                        numComments++;
                     }
-                });
+                }
+            });
 
-                // todo: Does this actually do any good?
-                requestAnimationFrame(() => {
+            // todo: Does this actually do any good?
+            requestAnimationFrame(() => {
 
-                    // Add clean comments to DOM
-                    $target.closest('article.comment').after(cleanComments.childNodes);
+                // Add clean comments to DOM
+                $target.closest('article.comment').after(cleanComments.childNodes);
 
-                    // Remove our click event + class; add native Zeit opener class
-                    $target.closest('div.comment-overlay').off().removeClass('js-load-comment-replies-lynk').addClass('js-show-replies');
+                // Remove our click event + class; add native Zeit opener class
+                $target.closest('div.comment-overlay').off().removeClass('js-load-comment-replies-lynk').addClass('js-show-replies');
 
-                    // Trigger click
-                    $target.closest('div.comment-overlay').trigger('click');
+                // Trigger click
+                $target.closest('div.comment-overlay').trigger('click');
 
 
-                    // Correct comment count
-                    numComments--;
+                // Correct comment count
+                numComments--;
 
-                    // Add close link
-                    const articleId = $target.closest('article.comment').prev('article.comment').attr('id');
-                    const closeHtml = '<a id="hide-replies-' + articleId + '" href="#" data-ct-label="antworten_verbergen" class="comment__rewrapper js-hide-replies"><span class="comment__count">' + numComments + '</span><span class="comment__cta">Antworten verbergen</span></a>';
+                // Add close link
+                const articleId = $target.closest('article.comment').prev('article.comment').attr('id');
+                const closeHtml = '<a id="hide-replies-' + articleId + '" href="#" data-ct-label="antworten_verbergen" class="comment__rewrapper js-hide-replies"><span class="comment__count">' + numComments + '</span><span class="comment__cta">Antworten verbergen</span></a>';
 
-                    $target.closest('.comment__container').prepend(closeHtml);
+                $target.closest('.comment__container').prepend(closeHtml);
 
-                    // Remove loader animation
-                    $target.find('span.comment-overlay__count').removeClass('progress-lynk');
-                });
+                // Remove loader animation
+                $target.find('span.comment-overlay__count').removeClass('progress-lynk');
+            });
 
-            })
-            ;
+        })
+        ;
     },
 
     cleanPage: ()=> {
