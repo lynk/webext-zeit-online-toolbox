@@ -4,6 +4,15 @@ body {
   font-size: 13px;
   letter-spacing: 0.4px;
   margin: 3px;
+  color: black;
+}
+
+a {
+  color: black;
+
+  &:hover {
+    text-decoration: none;
+  }
 }
 
 header {

@@ -6,17 +6,15 @@ var ZONC =
     htmlModeratedReplacer: '<hr style="color:green;">',
     htmlBlacklistedReplacer: '<hr style="color:firebrick;">',
     htmlSkeletonComment: '<div class="comment__container"><div class="comment-meta"><div class="comment-meta__name"><div class="skeleton-text-lynk"></div></div></div><div class="comment__body"><div class="skeleton-text-lynk"></div><div class="skeleton-text-lynk"></div>{link}</div></div>',
-    selectorIdPage: 'js-comments-body',
-    selectorIdUser: 'cntntfll',
+    selectorIdComments: 'js-comments-body',
     blacklistCss: '',
     textAddUser2Bl: 'User ignorieren',
     textRemoveUser2Bl: 'User von der Ignorierliste entfernen',
 
     removeCommentsModerated: () => {
 
-        // $(selector).find('em.moderation').closest('article.comment').not('[data-ct-column="1"]').remove();
 
-        $(document.getElementById(ZONC.selectorIdPage)).find('em.moderation')
+        $(document.getElementById(ZONC.selectorIdComments)).find('em.moderation')
             .closest('article.comment')
             .each(function () {
 
@@ -27,7 +25,7 @@ var ZONC =
 
     removeCommentsBlacklisted: () => {
 
-        $(document.getElementById(ZONC.selectorIdPage)).find('div.comment-meta__name').find(ZONC.blacklistCss)
+        $(document.getElementById(ZONC.selectorIdComments)).find('div.comment-meta__name').find(ZONC.blacklistCss)
             .closest('article.comment')
             .each(function () {
                 ZONC.removeCommentsFilter($(this));
@@ -42,28 +40,32 @@ var ZONC =
             && !target.nextAll('article.comment:first').hasClass('js-comment-toplevel')) {
 
             // First replace the placeholder {link} with emty string then append
-            target.empty().append(ZONC.htmlSkeletonComment.replace('{link}',''));
+            target.empty().append(ZONC.htmlSkeletonComment.replace('{link}', ''));
         }
         // Remove if standalone comment without replies
         else if (target.hasClass('js-comment-toplevel')) {
             target.remove();
         }
         else if (target.hasClass('comment--wrapped')) {
-            // todo: First comment with opener link
-            target.empty().append(ZONC.htmlSkeletonComment.replace('{link}',''));
+
+            // get sub-comments opener link
+            const subLink = target.find('.comment-overlay');
+            target.empty().append(ZONC.htmlSkeletonComment.replace('{link}', subLink.prop('outerHTML')));
         }
         else {
             target.remove();
         }
     },
 
-    initCommentListening: (wrapper) => {
+    initCommentListening: () => {
+
+        const selComments = document.getElementById('comments');
 
         // Remove native Zeit event listener class and add my own
-        $(wrapper).find('div.js-load-comment-replies').addClass('js-load-comment-replies-lynk').removeClass('js-load-comment-replies');
+        $(selComments).find('div.js-load-comment-replies').addClass('js-load-comment-replies-lynk').removeClass('js-load-comment-replies');
 
         // trigger click
-        $(wrapper).find('div.js-load-comment-replies-lynk').click(ZONC.loadComments);
+        $(selComments).find('div.js-load-comment-replies-lynk').click(ZONC.loadComments);
     },
 
     loadComments: (e) => {
@@ -157,13 +159,13 @@ var ZONC =
 
         chrome.storage.local.get(["blacklist"], function (result) {
 
-            // Get user ID by getting a meta tag property
-            const $prop = $('meta[content="' + username + '"').attr(('about'));
-            // Split to array
-            const $aUser = $prop.split('/');
+            // Get user ID from body data attr
+            const selBody = document.querySelector('body');
+            const userUrl = selBody.dataset.uniqueId;
+            const aUserUrl = userUrl.split('/')
+            const userId = parseInt(aUserUrl[3]);
 
-            // Lets do a little bit of security here
-            const userId = parseInt($aUser[2]);
+
             const escUsername = username.replace(/</g, "&lt;")
                 .replace(/>/g, "&gt;");
 
@@ -180,13 +182,14 @@ var ZONC =
 
         chrome.storage.local.get(["blacklist"], function (result) {
 
-            // Get user ID by getting a meta tag property
-            const $prop = $('meta[content="' + username + '"').attr(('about'));
-            // Split to array
-            const aUser = $prop.split('/');
+            // Get user ID from body data attr which is an URL
+            const selBody = document.querySelector('body');
+            const userUrl = selBody.dataset.uniqueId;
+            const aUserUrl = userUrl.split('/');
+            const userId = parseInt(aUserUrl[3]);
 
             // Delete user from bl by userId
-            delete result.blacklist[aUser[2]];
+            delete result.blacklist[userId];
 
             // Save
             chrome.storage.local.set({blacklist: result.blacklist});
@@ -194,18 +197,18 @@ var ZONC =
         })
     },
 
-    onUserPage: (selector) => {
+    onUserPage: () => {
 
         let $insert = $('<a id="zontb-btn-user"><svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="-1 -1 23 22"><circle cx="10.7" cy="10.7" r="10.2"/><rect x="9.1" y="10.7" width="3" height="6.5" /><path d="M12.2,7.5c0,0.8-0.7,1.5-1.5,1.5c-0.8,0-1.5-0.7-1.5-1.5V4.1C8.7,4.2,8.3,4.5,8,4.9c-1.5,1.5-1.5,3.9,0,5.4 c1.5,1.5,3.9,1.5,5.4,0c1.5-1.5,1.5-3.9,0-5.4c-0.3-0.3-0.7-0.6-1.2-0.8V7.5z" /></svg></span><span class="zontb-user-title">' + ZONC.textAddUser2Bl + '</span></a>');
 
         // Cache selector
-        const $userWrapper = $(selector).find('.usr-data-wrapper');
+        const $userWrapper = $('#main').find('.user-header__container');
 
         // Insert blacklist link
-        $userWrapper.find('.title').after($insert);
+        $userWrapper.find('.user-header__title').after($insert);
 
         // Get username
-        const username = $userWrapper.find('.title').html();
+        const username = $userWrapper.find('.user-header__title').html();
 
         chrome.storage.local.get(["blacklist"], function (result) {
 
@@ -276,30 +279,31 @@ var ZONC =
 
 $(document).ready(function () {
 
-    // Are we on an user profile page?
-    const selUser = document.getElementById(ZONC.selectorIdUser);
 
-    if (selUser != null) {
-        ZONC.onUserPage(selUser);
-    }
+    // On which page type are we?
+    const selBody = document.querySelector('body');
 
-    // We are on a page with comments?
-    const selPage = document.getElementById(ZONC.selectorIdPage);
+    switch (selBody.dataset.pageType) {
 
-    if (selPage != null) {
+        case 'userprofile':
+            ZONC.onUserPage();
+            break;
 
-        // Build + cache user css selector to speed up things later
-        ZONC.buildBlacklistCss();
+        case 'article':
+            // Build + cache user css selectors to speed up things later
+            ZONC.buildBlacklistCss();
 
-        // Get config on browser startup
-        chrome.storage.local.get(['config'], function (result) {
+            // Get config on browser startup
+            chrome.storage.local.get(['config'], function (result) {
 
-            // Start listening
-            if (result.config.blacklist == true) {
-                ZONC.cleanPage();
-                ZONC.initCommentListening(selPage);
-            }
-        });
+                // Start listening
+                if (result.config.blacklist == true) {
+                    ZONC.cleanPage();
+                    ZONC.initCommentListening();
+                }
+            });
+
+            break;
     }
 
 });// ready()

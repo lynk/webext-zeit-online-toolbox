@@ -3,6 +3,12 @@
 document.addEventListener("DOMContentLoaded", function () {
 
     ZPOP.initPopup();
+
+
+    $('.open-options-page').click( () => {
+        browser.runtime.openOptionsPage();
+    });
+
 });
 
 
@@ -21,7 +27,6 @@ var ZPOP = {
 
 
     setConfig: (option, bool)=> {
-
 
         chrome.storage.local.get(['config'], function (result) {
 

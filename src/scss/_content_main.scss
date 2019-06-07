@@ -82,17 +82,22 @@
 #zontb-btn-user {
 
   border: 1px solid $color-grey-medium;
-  padding: 5px 10px 5px 0;
-  border-radius: 12px;
+  padding: 0 10px 4px 0;
+  border-radius: 15px;
   cursor: pointer;
   color: $color-primary;
+  grid-row: 6;
+  line-height: 1.3;
+  font-size: 15px;
+  background: #fff;
+  margin-top: 6px;
 
   svg {
     position: relative;
-    transform: scale(1.51);
+    transform: scale(1.5);
     top: 4px;
-    left: 2px;
-    margin-right: 11px;
+    left: 4px;
+    margin-right: 15px;
   }
 
   path, rect {

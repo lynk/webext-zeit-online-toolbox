@@ -1,7 +1,7 @@
 {
   "manifest_version": 2,
   "name": "Zeit Online Toolbox",
-  "version": "1.0.2",
+  "version": "1.1.1",
   "description": "Zeit Online Ignorierliste für die User-Kommentare. Sperre und blocke User aus den Kommentaren. Moderierte Kommentare werden ausgeblendet. Automatische Ein-Seiten-Ansicht und mehr.",
   "author": "lynk",
   "applications": {
