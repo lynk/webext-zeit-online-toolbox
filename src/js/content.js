@@ -5,14 +5,13 @@ var ZONC =
 
     htmlModeratedReplacer: '<hr style="color:green;">',
     htmlBlacklistedReplacer: '<hr style="color:firebrick;">',
-    htmlSkeletonComment: '<div class="comment__container"><div class="comment-meta"><div class="comment-meta__name"><div class="skeleton-text-lynk"></div></div></div><div class="comment__body"><div class="skeleton-text-lynk"></div><div class="skeleton-text-lynk"></div>{link}</div></div>',
+    htmlSkeletonComment: '<div class="comment__container"><div class="comment-meta"><div class="comment-meta__name"><div class="skeleton-text-lynk"></div></div></div><div class="comment__body"><div class="skeleton-text-lynk"></div>{link}</div></div>',
     selectorIdComments: 'js-comments-body',
     blacklistCss: '',
     textAddUser2Bl: 'User ignorieren',
     textRemoveUser2Bl: 'User von der Ignorierliste entfernen',
 
     removeCommentsModerated: () => {
-
 
         $(document.getElementById(ZONC.selectorIdComments)).find('em.moderation')
             .closest('article.comment')
@@ -35,7 +34,9 @@ var ZONC =
     removeCommentsFilter: (target) => {
 
 
-        // Add skeleton if comment has replies = no next toplevel comment
+        // TODO: Es werden angeziegt: 1lvl skeleton comment + genau 1 und nur 1 2lvl skeleton comment. Soll nicht angezeigt werden
+
+        // Add skeleton if comment has replies = no next toplevel class comment
         if (target.hasClass('js-comment-toplevel')
             && !target.nextAll('article.comment:first').hasClass('js-comment-toplevel')) {
 
@@ -101,14 +102,17 @@ var ZONC =
                 const $this = $(this);
 
                 // Check for moderated comment
-                if ($this.find('em.moderation').length === 0) {
+                if ($this.find('em.moderation').length == 0) {
 
                     // Check for username and add to cleanComments
                     if ($this.find('div.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
-                        // check for iteration index to add stuff add xth
+
+                        // check for iteration index to add custom close button
                         if (numComments % 4 == 0) {
-                            $this.addClass('posi-rel-lynk');
-                            $this.append('<a class="gotop-comment-lynk" href="#' + articleId + '"></a>');
+                            //add css class 'position:relative'
+                            //$this.addClass('posi-rel-lynk');
+
+                            $this.children('.comment__container').append('<a title="Schließen" class="close-comment-lynk" data-lynk-comment-id="' + articleId + '"></a>');
                         }
 
                         $this.attr('style', 'display:none');
@@ -116,6 +120,8 @@ var ZONC =
                         numComments++;
                     }
                 }
+
+
             });
 
             // todo: Does this actually do any good?
@@ -144,8 +150,26 @@ var ZONC =
                 $target.find('span.comment-overlay__count').removeClass('progress-lynk');
             });
 
+        });
+    },
+
+    initCloseButtonListening: () => {
+
+        // listen to the custom buttons that close subcomment sections
+        $(document.getElementById(ZONC.selectorIdComments)).on('click', '.close-comment-lynk', (e) => {
+
+            // get article block with the close link
+            const $parentArticle = $(e.target).closest('.comment').prevAll('[data-ct-column="1"]');
+
+            $parentArticle.find('.comment__cta').trigger('click');
+
+            const parentArticleElem = document.getElementById($parentArticle.attr('id'));
+
+            parentArticleElem.scrollIntoView();
+            window.scrollBy(0,-50);
+            //document.scrollTop = 120;
+
         })
-        ;
     },
 
     cleanPage: ()=> {
@@ -279,7 +303,6 @@ var ZONC =
 
 $(document).ready(function () {
 
-
     // On which page type are we?
     const selBody = document.querySelector('body');
 
@@ -290,6 +313,8 @@ $(document).ready(function () {
             break;
 
         case 'article':
+        case 'gallery':
+            //ZONC.startListenerClose();
             // Build + cache user css selectors to speed up things later
             ZONC.buildBlacklistCss();
 
@@ -300,6 +325,7 @@ $(document).ready(function () {
                 if (result.config.blacklist == true) {
                     ZONC.cleanPage();
                     ZONC.initCommentListening();
+                    ZONC.initCloseButtonListening();
                 }
             });
 
