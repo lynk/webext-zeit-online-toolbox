@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
 
     $('.open-options-page').click( () => {
-        browser.runtime.openOptionsPage();
+        chrome.runtime.openOptionsPage();
     });
 
 });
