@@ -24,7 +24,7 @@ var ZONC =
 
     removeCommentsBlacklisted: () => {
 
-        $(document.getElementById(ZONC.selectorIdComments)).find('div.comment-meta__name').find(ZONC.blacklistCss)
+        $(document.getElementById(ZONC.selectorIdComments)).find('.comment-meta__name').find(ZONC.blacklistCss)
             .closest('article.comment')
             .each(function () {
                 ZONC.removeCommentsFilter($(this));
@@ -105,7 +105,7 @@ var ZONC =
                 if ($this.find('em.moderation').length == 0) {
 
                     // Check for username and add to cleanComments
-                    if ($this.find('div.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
+                    if ($this.find('.comment-meta__name').find(ZONC.blacklistCss).length === 0) {
 
                         // check for iteration index to add custom close button
                         if (numComments % 4 == 0) {
@@ -131,10 +131,10 @@ var ZONC =
                 $target.closest('article.comment').after(cleanComments.childNodes);
 
                 // Remove our click event + class; add native Zeit opener class
-                $target.closest('div.comment-overlay').off().removeClass('js-load-comment-replies-lynk').addClass('js-show-replies');
+                $target.closest('.comment-overlay').off().removeClass('js-load-comment-replies-lynk').addClass('js-show-replies');
 
                 // Trigger click
-                $target.closest('div.comment-overlay').trigger('click');
+                $target.closest('.comment-overlay').trigger('click');
 
 
                 // Correct comment count
@@ -315,6 +315,7 @@ $(document).ready(function () {
         case 'article':
         case 'gallery':
             //ZONC.startListenerClose();
+
             // Build + cache user css selectors to speed up things later
             ZONC.buildBlacklistCss();
 
