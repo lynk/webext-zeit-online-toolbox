@@ -2,7 +2,9 @@
   "name": "webext-zontools",
   "version": "1.0.0",
   "description": "",
-  "dependencies": {},
+  "dependencies": {
+    "web-ext": "^4.1.0"
+  },
   "devDependencies": {
     "gulp": "4.0.0",
     "gulp-concat": "2.6.1",
