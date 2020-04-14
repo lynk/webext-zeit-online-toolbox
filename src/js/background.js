@@ -31,6 +31,10 @@ var ZBACK = {
             return;
         }
 
+        if (reqUrl.pathname.includes('zustimmung', -1)) {
+            return;
+        }
+
 
         //  If this is true, redirecting is done
         if (details.statusCode == 200 && ZBACK.isSingle) {
